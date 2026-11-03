@@ -1,6 +1,6 @@
 # openlibing-metrics-test
 
-OpenLibing 代码度量指标扫描的公共测试仓库。
+OpenLibing 代码度量指标扫描测试仓库（组织内私有）。
 
 - 工作流文件：`.github/workflows/code-metrics-scan.yml`
 - 扫描插件：`openlibing-test/code-metrics-action@github-actions-adaptation`
