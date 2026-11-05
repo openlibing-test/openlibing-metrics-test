@@ -1,0 +1,32 @@
+name: tag-checkout-test
+
+# 验证 GitHub Actions 在附注 tag 触发的流水线中 checkout 是否正常：
+# 对比 github.sha（事件载荷）与 tag 对象 SHA、tag 解引用后的提交 SHA 三者关系。
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checkout-on-tag:
+    name: Checkout on tag event
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dump ref and sha info
+        run: |
+          echo "GITHUB_REF=$GITHUB_REF"
+          echo "GITHUB_SHA=$GITHUB_SHA"
+          echo "github.ref=${{ github.ref }}"
+          echo "github.sha=${{ github.sha }}"
+          echo "ref object type: $(git cat-file -t "$GITHUB_REF")"
+          echo "ref object sha:  $(git rev-parse "$GITHUB_REF")"
+          echo "ref commit sha:  $(git rev-parse "$GITHUB_REF^{commit}")"
+          echo "HEAD sha:        $(git rev-parse HEAD)"
+          echo "describe:        $(git describe --tags --exact-match 2>/dev/null || echo none)"
