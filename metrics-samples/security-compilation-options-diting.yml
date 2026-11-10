@@ -1,0 +1,40 @@
+name: security-compilation-options-diting
+
+on:
+  workflow_dispatch:
+
+# OIDC 联邦认证：允许插件获取流水线 OIDC ID Token 换取华为云 STS 临时凭证
+permissions:
+  id-token: write
+
+jobs:
+  build:
+    name: scan-artifacts
+    runs-on: ["codearts-hosted", "ubuntu-latest", "x64", "small"]
+    steps:
+      - name: Checkout
+        uses: checkout
+        with:
+          token: ${{ secrets.GC_TOKEN }}
+
+      # ===== 下载 pack_diting_community 构建产物 =====
+      # OBS bucket openlibing-gitcode-action（cn-southwest-2）
+      # 公网访问 URL：https://openlibing-gitcode-action.obs.cn-southwest-2.myhuaweicloud.com:443/code-metrics-action/HiSpark/pack_diting_community.tar.gz
+      - name: download-artifacts
+        id: download-artifacts
+        uses: obs-download
+        with:
+          endpoint: "obs.cn-southwest-2.myhuaweicloud.com"
+          bucket: "openlibing-gitcode-action"
+          key: "code-metrics-action/HiSpark/pack_diting_community.tar.gz"
+          path: "./artifacts/"
+          file-concurrency: "1"
+
+      # ===== 扫描产物并上传结果 =====
+      # artifact-path 精确指定只扫描这一个包
+      # artifact-download-url 为完整 URL（不以 / 结尾），openlibing 平台用此 URL 溯源下载产物
+      - name: security-compilation-options-scan
+        uses: openlibing/security-compilation-options-action@master
+        with:
+          artifact-path: "./artifacts/pack_diting_community.tar.gz"
+          artifact-download-url: "https://openlibing-gitcode-action.obs.cn-southwest-2.myhuaweicloud.com:443/code-metrics-action/HiSpark/pack_diting_community.tar.gz"
