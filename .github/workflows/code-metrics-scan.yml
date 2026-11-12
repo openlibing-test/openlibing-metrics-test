@@ -27,4 +27,4 @@ jobs:
           path: .code-metrics-action
 
       - name: Run code metrics scan
-        uses: openlibing-test/code-metrics-action@master
+        uses: ./.code-metrics-action
