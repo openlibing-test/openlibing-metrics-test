@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ROBOT_TOKEN }}
 
       - name: Run code metrics scan
         uses: openlibing-test/code-metrics-action@master
