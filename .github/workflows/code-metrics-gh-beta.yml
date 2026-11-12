@@ -1,0 +1,30 @@
+name: Code Metrics GH Beta
+
+on:
+  workflow_dispatch:
+    inputs:
+      exclude:
+        description: "排除目录"
+        required: false
+        default: ".git,.github,node_modules,dist,vendor"
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: code-metrics-gh-beta-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    name: Code metrics scan (beta endpoint)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Code metrics scan
+        uses: ./vendor/code-metrics-action
+        with:
+          exclude-dirs: ${{ inputs.exclude }}
