@@ -19,6 +19,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run code metrics scan
-        uses: openlibing-test/code-metrics-action@github-actions-adaptation
+        uses: openlibing-test/code-metrics-action@master
         with:
           min-lines: "10"
