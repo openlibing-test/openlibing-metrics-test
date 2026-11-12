@@ -17,10 +17,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Checkout code-metrics-action
+        uses: actions/checkout@v4
         with:
+          repository: openlibing-test/code-metrics-action
+          ref: master
           token: ${{ secrets.ROBOT_TOKEN }}
+          path: .code-metrics-action
 
       - name: Run code metrics scan
         uses: openlibing-test/code-metrics-action@master
-        with:
-          min-lines: "10"
