@@ -29,5 +29,5 @@ jobs:
       - name: Run code metrics scan
         uses: ./.code-metrics-action
         with:
-          # 排除插件仓 checkout 目录，仅统计本仓代码
-          exclude-dirs: ".code-metrics-action"
+          # 排除插件仓 checkout 目录与 vendor 内的第三方插件 bundle，仅统计本仓代码
+          exclude-dirs: ".code-metrics-action,vendor"
