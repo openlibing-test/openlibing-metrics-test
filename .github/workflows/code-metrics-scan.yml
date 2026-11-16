@@ -21,8 +21,8 @@ jobs:
       - name: Checkout code-metrics-action
         uses: actions/checkout@v4
         with:
-          repository: openlibing-test/code-metrics-action
-          ref: summary-english-for-github
+          repository: openlibing/code-metrics-action
+          ref: master
           token: ${{ secrets.ROBOT_TOKEN }}
           path: .code-metrics-action
 
