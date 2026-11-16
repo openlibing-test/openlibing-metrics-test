@@ -31,3 +31,7 @@ jobs:
         with:
           # 排除插件仓 checkout 目录与 vendor 内的第三方插件 bundle，仅统计本仓代码
           exclude-dirs: ".code-metrics-action,vendor"
+
+      - name: Show step summary
+        # 输出运行摘要内容，便于在日志中核对 GitHub 侧摘要是否为全英文
+        run: cat "$GITHUB_STEP_SUMMARY"
