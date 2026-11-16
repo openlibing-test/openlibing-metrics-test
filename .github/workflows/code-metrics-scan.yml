@@ -33,5 +33,8 @@ jobs:
           exclude-dirs: ".code-metrics-action,vendor"
 
       - name: Show step summary
-        # 输出运行摘要内容，便于在日志中核对 GitHub 侧摘要是否为全英文
-        run: cat "$GITHUB_STEP_SUMMARY"
+        # GITHUB_STEP_SUMMARY 每个 step 独立，改为读取 runner 临时目录下所有 step_summary 文件
+        # 以核对插件步骤写入的摘要内容是否为全英文
+        run: |
+          ls -la "$RUNNER_TEMP/_runner_file_commands/" || true
+          cat "$RUNNER_TEMP"/_runner_file_commands/step_summary_* 2>/dev/null || true
