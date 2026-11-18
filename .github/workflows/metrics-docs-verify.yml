@@ -1,0 +1,34 @@
+name: metrics-docs-verify
+
+on:
+  push:
+    branches:
+      - metrics-docs-verify
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  scan:
+    name: Code metrics scan (docs-only)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 临时验证：引用 PR #53 修复分支（含无函数时均值为 null 的处理）
+      - name: Checkout code-metrics-action (fix branch)
+        uses: actions/checkout@v4
+        with:
+          repository: openlibing-test/code-metrics-action
+          ref: fix-metrics-zero-average-display
+          token: ${{ secrets.ROBOT_TOKEN }}
+          path: .code-metrics-action
+
+      - name: Run code metrics scan
+        uses: ./.code-metrics-action
+        with:
+          # 纯文档验证：排除源码、示例、插件与工作流目录，仅统计 Markdown 文档
+          exclude-dirs: ".git,.github,.code-metrics-action,vendor,src,metrics-samples,pom.xml,node_modules,dist"
